@@ -1,0 +1,17 @@
+#creating a user
+- name: Create and condigure user on all hosts
+  hosts: all
+  become: true
+  tasks: 
+    - name: Add user 'adminuser'
+      user: 
+        name: adminuser
+        state: present
+        groups: wheel
+
+    - name: Set up authorized SSH key for 'adminuser'
+      authorized_key:
+        user: adminuser
+        state: present
+        key: "{{ lookup('file', '~/.ssh/id_ed25519.pub') }}"
+
