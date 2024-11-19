@@ -1,0 +1,29 @@
+#health_check.yml
+- name: Generate a system health report
+  hosts: all
+  become: true
+  tasks:
+    - name: Check uptime
+      command: uptime
+      register: uptime_result
+
+    - name: Check disk space
+      command: df -h
+      register: disk_result
+
+    - name: Check memory usage
+      command: free -m
+      register: memory_result
+
+    - name: Save health report
+      copy:
+        content: |
+          Uptime:
+          {{ uptime_result.stdout }}
+
+          Disk Space:
+          {{ disk_result.stdout }}
+
+          Memory Usage:
+          {{ memory_result.stdout }}
+        dest: /tmp/health_report.txt

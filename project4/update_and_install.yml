@@ -1,0 +1,18 @@
+# update_and _install.yml
+- name: Update and install packages
+  hosts: all
+  become: true
+  tasks:
+    - name: Update all packages
+      dnf:
+        name: "*"
+        state: latest
+
+    - name: Install essential packages
+      dnf:
+        name:
+          - vim
+          - git
+          - curl
+        state: present
+
