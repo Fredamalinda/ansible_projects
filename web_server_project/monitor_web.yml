@@ -1,0 +1,5 @@
+- name: Monitor Web Servers
+  hosts: web_servers
+  roles:
+    - monitor
+

@@ -1,0 +1,5 @@
+- name: Deploy Apache Web Servers
+  hosts: web_servers
+  roles: 
+    - install_apache
+

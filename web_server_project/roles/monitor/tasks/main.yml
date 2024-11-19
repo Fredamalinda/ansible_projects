@@ -1,0 +1,15 @@
+- name: Check if Apache is running
+  ansible.builtin.service_facts:
+
+- name: Verify Apache status
+  debug:
+    msg: "Apache is running on {{ inventory_hostname }}"
+  when: ansible_facts.services['httpd.service'].state == 'running'
+
+- name: Notify if Apache is not running
+  debug:
+    msg: "Apache is NOT running on {{ inventory_hostname }}"
+  when: ansible_facts.services['httpd.service'].state != 'running'
+
+ 
+

@@ -1,0 +1,29 @@
+---
+# tasks file for roles/install_apache
+- name: Install Apache HTTP Server
+  ansible.builtin.yum:
+    name: httpd
+    state: present
+
+- name: Ensure Apache is enabled and started
+  ansible.builtin.service:
+    name: httpd
+    state: started
+    enabled: yes
+
+- name: Deploy custome index.html
+  ansible.builtin.template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+
+- name: Allow HTTP service through the firewall
+  ansible.builtin.firewalld:
+    service: http
+    permanent: yes
+    state: enabled
+    immediate: yes
+
+- name: Reload the firewall
+  ansible.builtin.command:
+    cmd: firewall-cmd --reload
+
