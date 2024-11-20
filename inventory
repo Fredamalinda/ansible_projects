@@ -1,2 +1,5 @@
+[proxy]
 ansible1
+
+[webserver]
 ansible2

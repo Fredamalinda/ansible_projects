@@ -1,0 +1,5 @@
+[dev]
+ansible1
+
+[prod]
+ansible2

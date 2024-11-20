@@ -1,0 +1,19 @@
+
+- name: Add multiple users
+  hosts: proxy
+  vars:
+    proxy:
+      - username: lobo
+        pass: lobo
+      - username: dott
+        pass: dott
+      - username: duty
+        pass: duty
+  tasks: 
+  - name: Add users
+    user:
+      name: "{{ item.username }}"
+      password: "{{ item.pass | password_hash('sha512') }}"
+    loop: "{{ proxy }}" 
+
+
