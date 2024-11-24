@@ -1,0 +1,24 @@
+---
+- name: Web Deployment and Monitoring
+  hosts: webservers
+  become: true
+
+  roles:
+    - geerlingguy.apache
+
+  tasks:
+    - name: Ensure uptime command is monitored
+      shell: uptime > /tmp/uptime.log
+      when: ansible_hostname == "ansible1"
+
+    - name: Deploy custom index.html
+      copy:
+        content: "Welcome to {{ inventory_hostname }}!"
+        dest: /var/www/html/index.html
+      notify: Restart Apache
+
+  handlers:
+    - name: Restart Apache
+      service:
+        name: apache2
+        state: restarted
