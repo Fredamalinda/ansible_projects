@@ -1,0 +1,7 @@
+---
+# tasks file for roles/sync_time
+- name: Ensure NTP service is installed and running
+  ansible.builtin.service:
+    name: chronyd
+    state: started
+    enabled: true

@@ -1,0 +1,8 @@
+---
+- name: System Configuration Playbook
+  hosts: all
+  become: true
+  roles:
+    - install_packages
+    - sync_time
+    - update_configs

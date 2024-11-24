@@ -1,0 +1,10 @@
+---
+# tasks file for roles/install_packages
+#
+- name: Install necessary packages
+  ansible.builtin.package:
+    name: 
+      - vim
+      - git
+      - curl
+    state: present

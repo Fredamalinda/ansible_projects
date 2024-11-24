@@ -1,0 +1,15 @@
+---
+# tasks file for roles/update_configs
+
+- name: Update /etc/hosts with custom entries
+  ansible.builtin.copy:
+    dest: /etc/hosts
+    content: |
+      127.16.200.136 localhost
+      127.16.200.135 ansible1
+      127.16.200.133 ansible2
+
+- name: Add custom message to /etc/motd
+  ansible.builtin.lineinfile:
+    path: /etc/motd
+    line: "Welcome to your Ansible-configured server!"
