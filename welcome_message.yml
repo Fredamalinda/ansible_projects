@@ -1,0 +1,16 @@
+---
+- name: Set up a welcome message on target servers
+  hosts: all
+  become: true
+
+  vars:
+    welcome_message: "Welcome to {{ inventory_hostname }}! Managed by Ansible."
+
+  tasks:
+    - name: Create a welcome message file
+      copy:
+        content: "{{ welcome_message }}"
+        dest: /etc/motd
+        owner: root
+        group: root
+        mode: '0644'
