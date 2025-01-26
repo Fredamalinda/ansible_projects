@@ -1,0 +1,20 @@
+---
+- name: Configure a cron job
+  hosts: all
+  become: yes
+  tasks:
+    - name: Create a script
+      ansible.builtin.copy:
+        content: |
+          #!/bin/bash
+          echo "Cron job ran at $(date)" >> /var/log/cron_test.log
+        dest: /usr/local/bin/test_script.sh
+        mode: '0755'
+
+    - name: Add cron job
+      ansible.builtin.cron:
+        name: "Run test script at midnight"
+        user: root
+        minute: 0
+        hour: 0
+        job: "/usr/local/bin/test_script.sh"
