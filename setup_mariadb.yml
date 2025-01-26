@@ -1,0 +1,35 @@
+---
+- name: Configure MariaDB
+  hosts: db_servers
+  become: yes
+  vars:
+    db_name: myapp_db
+    db_user: app_user
+    db_password: secretpassword
+  tasks:
+    - name: Install MariaDB
+      ansible.builtin.yum:
+        name:
+          - mariadb-server
+          - mariadb
+        state: present
+
+    - name: Start and enable MariaDB
+      ansible.builtin.service:
+        name: mariadb
+        state: started
+        enabled: yes
+
+    - name: Create the database
+      ansible.builtin.mysql_db:
+        name: "{{ db_name }}"
+        state: present
+        login_user: root
+
+    - name: Create the database user
+      ansible.builtin.mysql_user:
+        name: "{{ db_user }}"
+        password: "{{ db_password }}"
+        priv: "{{ db_name }}.*:ALL"
+        state: present
+        login_user: root
