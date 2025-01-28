@@ -1,0 +1,33 @@
+---
+- name: Deploy a Dockerized web application
+  hosts: app_servers
+  become: yes
+  vars:
+    container_name: web_app
+    image_name: nginx:latest
+    host_port: 8080
+    container_port: 80
+  tasks:
+    - name: Install Docker
+      ansible.builtin.yum:
+        name: docker
+        state: present
+
+    - name: Start and enable Docker service
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Pull the latest Nginx Docker image
+      community.docker.docker_image:
+        name: "{{ image_name }}"
+        source: pull
+
+    - name: Run the Nginx container
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        image: "{{ image_name }}"
+        state: started
+        ports:
+          - "{{ host_port }}:{{ container_port }}"
