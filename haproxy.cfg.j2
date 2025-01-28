@@ -1,0 +1,8 @@
+frontend http_front
+    bind *:{{ frontend_port }}
+    default_backend servers
+
+backend servers
+{% for server in backend_servers %}
+    server {{ server.name }} {{ server.address }}:80 check
+{% endfor %}
