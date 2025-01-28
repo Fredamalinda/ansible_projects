@@ -1,0 +1,26 @@
+---
+- name: Configure HAProxy load balancer
+  hosts: lb_servers
+  become: yes
+  vars:
+    backend_servers:
+      - { name: web1, address: 192.168.1.101 }
+      - { name: web2, address: 192.168.1.102 }
+    frontend_port: 80
+  tasks:
+    - name: Install HAProxy
+      ansible.builtin.yum:
+        name: haproxy
+        state: present
+
+    - name: Configure HAProxy
+      ansible.builtin.template:
+        src: haproxy.cfg.j2
+        dest: /etc/haproxy/haproxy.cfg
+        mode: '0644'
+
+    - name: Restart HAProxy to apply changes
+      ansible.builtin.service:
+        name: haproxy
+        state: restarted
+        enabled: yes
